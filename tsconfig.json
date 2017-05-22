@@ -9,12 +9,19 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+     "removeComments": false,
+    "noImplicitAny": false,
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
       "es2016",
       "dom"
-    ]
+    ],
+    "exclude": [
+    "node_modules",
+    "typings/main",
+    "typings/main.d.ts"
+  ]
   }
 }
