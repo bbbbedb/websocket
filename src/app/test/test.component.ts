@@ -3,16 +3,15 @@ import * as Rx from 'rx';
 import * as io from 'socket.io-client';
 
 import { Subscription } from 'rxjs/Subscription';
-import {ChatService} from './websocket';
+import {ChatService} from '../websocket';
 
 @Component({
-  moduleId: module.id,
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: 'app-test',
+  templateUrl: './test.component.html',
+  styleUrls: ['./test.component.css'],
    providers:[ ChatService]
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class TestComponent implements OnInit, OnDestroy {
 messages = [];
 
   connection;

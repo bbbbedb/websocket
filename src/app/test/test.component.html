@@ -1,14 +1,8 @@
-
-<!-- 在行動或桌面設備，column 寬度總是 50% 寬度 -->
-<div class="row">
-  <div class="col-xs-6"  style="background-color:lightblue;">
-
 <div style="height:400px">
   <div *ngFor="let message of messages">
   {{message.text}}
 </div>
 </div>
-
 
 
 <input [(ngModel)]="message"><button (click)="sendMessage()">Send</button>
@@ -19,18 +13,4 @@
 
 <button type="button" class="btn btn-large btn-block btn-default" (click)="try()">Show</button>
 
-<p>app component</p>
-  </div>
-
-
-  <div class="col-xs-6"  style="background-color:pink;">
-<app-test></app-test>
-  </div>
-</div>
-
-
-
-
-
-
-
+<p>text component</p>
