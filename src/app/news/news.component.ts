@@ -6,26 +6,23 @@ import { Subscription } from 'rxjs/Subscription';
 import {ChatService} from '../websocket';
 
 @Component({
-  selector: 'app-test',
-  templateUrl: './test.component.html',
-  styleUrls: ['./test.component.css'],
+  selector: 'app-news',
+  templateUrl: './news.component.html',
+  styleUrls: ['./news.component.css'],
    providers:[ ChatService]
 })
-export class TestComponent implements OnInit, OnDestroy {
-messages:any;
+export class NewsComponent implements OnInit, OnDestroy {
 
   connection;
+news: any;
+  connectionNews;
 
-  message;
 
-clean(){
-  this.messages = [];
-}
 
  try (){
    
-   console.log(this.messages);
-   
+
+     console.log(this.news);
    
  }
 
@@ -38,8 +35,8 @@ clean(){
 
 
 
-    this.chatService.sendMessage(this.message);
-    this.message = '';
+    this.chatService.sendNews(this.news);
+
     
 
   }
@@ -50,12 +47,12 @@ clean(){
 
  
 
-    this.connection = this.chatService.getMessages().subscribe(message => {
+    this.connectionNews = this.chatService.getNews().subscribe(message => {
+
+
 
       // this.messages.push(message);
-      this.messages = message[0].text;
-      
-      
+      this.news = message[0].news;
 
     })
 
@@ -66,7 +63,7 @@ clean(){
 
   ngOnDestroy() {
 
-    this.connection.unsubscribe();
+    this.connectionNews.unsubscribe();
 
   }
 
