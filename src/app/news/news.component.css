@@ -1,0 +1,9 @@
+.col-xs-12{
+    /*background-color: lightcyan;*/
+    padding:20px 10px;
+}
+
+.col-xs-12 div{
+    margin-top:5px;
+    background-color: lightgrey
+}

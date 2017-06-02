@@ -5,7 +5,7 @@ const http = require('http');
 const bodyParser = require('body-parser');
 var url = require('url');
 const axios = require('axios');
-
+// var kafka = require('kafka-node');
 
 var fs = require('fs');
 // Get our API routes
@@ -54,7 +54,7 @@ app.use('/api', api);
 
 // Catch all other routes and return the index file
 app.get('/', (req, res) => {
-  res.render(path.join('index', { title: 'WDDS' }));
+  res.render(path.join('index', { title: 'websocket' }));
 });
 
 /**
@@ -66,8 +66,10 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-const server = http.createServer(app);
 
+// const server = http.createServer(app);
+const server = require('http').createServer(app)
+const io = require('socket.io').listen(server)
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -87,17 +89,15 @@ server.listen(port, () => console.log(`API running on localhost:${port}`));
 // FS取得檔案
 var tryJson = getConfig('./server/Json/tryJson.json');
 var newsJson = getConfig('./server/Json/newsJson.json');
-
-
-
-
+var kafkaJson = getConfig('./server/Json/test.json');
+console.log(kafkaJson);
 let app1 = require('express')();
 let http1 = require('http').Server(app);
-let io = require('socket.io')(http1);
+// let io = require('socket.io')(http1);
 
 
 
-console.log(newsJson);
+
 
 
 
@@ -106,12 +106,12 @@ io.on('connection', (socket) => {
   // 使連入就送出 ，其餘所有socket.on 事件都在connection裡
   io.emit('message', tryJson);
   io.emit('news', newsJson);
+  // io.emit('kafka', kafkaJson);
 
 
 
 
-
-// 使用者離線時
+  // 使用者離線時
   socket.on('disconnect', function () {
     console.log('user disconnected');
 
@@ -140,7 +140,7 @@ io.on('connection', (socket) => {
 
     io.emit('message', tryJson);
 
-    console.log(tryJson);
+    // console.log(tryJson);
   });
 
 
@@ -148,9 +148,9 @@ io.on('connection', (socket) => {
 
 
 
-socket.on('add-News', (message) => {
+  socket.on('add-news', (message) => {
     // 把傳入值push進newJson裡
-
+    console.log(message);
     newsJson[0].news.push(message);
 
     let content = JSON.stringify(newsJson);
@@ -165,8 +165,8 @@ socket.on('add-News', (message) => {
 
 
 
-    io.emit('message', tryJson);
-
+    // io.emit('message', tryJson);
+    io.emit('news', newsJson);
     console.log(tryJson);
   });
 
@@ -180,12 +180,60 @@ socket.on('add-News', (message) => {
 
 });
 
-http1.listen(5000, () => {
-  console.log('started on port 5000');
+// http1.listen(5000, () => {
+//   console.log('started on port 5000');
+// });
+
+
+
+
+
+
+
+
+
+// // kafka 開始
+
+var kafka = require('kafka-node')
+
+
+var Consumer = kafka.Consumer;
+var client = new kafka.Client('59.127.187.54:2181');
+var offset = new kafka.Offset(client);
+offset.fetch([
+  { topic: 'test', partition: 0, time: Date.now()-120000, maxNum: 1 }
+], function (err, data) {
+  // data 
+  // { 'topicname': { 'partition': [999] } } 
+  console.log(Date.now())
+  var consumer = new Consumer(
+    client,
+    [
+      {
+        topic: 'test',
+        partition: 0,
+        offset: data['test'][0][0]
+      }
+    ],
+    {
+      autoCommit: false,
+      fromOffset: true,
+      groupId: 'test',
+      // Auto commit config
+
+      autoCommitMsgCount: 100,
+      autoCommitIntervalMs: 5000,
+      // Fetch message config
+      fetchMaxWaitMs: 100,
+      fetchMinBytes: 1,
+      fetchMaxBytes: 10000000
+
+    }
+  );
+  consumer.on('message', function (message) {
+    io.emit('kafka', message);
+    console.log(message);
+  });
 });
-
-
-
-
 
 

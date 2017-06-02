@@ -1,5 +1,39 @@
-<p>
-  news 1works!
-</p>
+<input [(ngModel)]="newspaper.title" placeholder="標題">
+
+<br>
+
+<input [(ngModel)]="newspaper.writer" placeholder="作者"><br>
+<input [(ngModel)]="newspaper.date" readonly="readonly"><br>
+<input [(ngModel)]="newspaper.contain" style="height:20vh; width:45vw;" placeholder="內容..."><br>
+
+
+<button (click)="sendNews()">Send</button>
 
 <button type="button" class="btn btn-large btn-block btn-default" (click)="try()">Show</button>
+
+
+
+
+<div style="height:400px">
+  <div *ngFor="let new of news let i =index">
+    <div class="col-xs-12 col-md-4" *ngIf = "i<3">
+
+
+      <div>
+        標題：{{new.title}}
+      </div>
+      <div>
+        用戶：{{new.name}}
+      </div>
+      <div>
+        日期：{{new.date}}
+      </div>
+      <div style="height:200px;">
+        內容：{{new.contain}}
+      </div>
+
+    </div>
+  </div>
+
+
+  

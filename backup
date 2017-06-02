@@ -1,0 +1,76 @@
+
+
+var options = {
+    groupId: 'test',
+// Auto commit config
+    autoCommit: false,
+    autoCommitMsgCount: 100,
+    autoCommitIntervalMs: 5000,
+// Fetch message config
+    fetchMaxWaitMs: 100,
+    fetchMinBytes: 1,
+    fetchMaxBytes: 10000000,
+    fromOffset:true
+};
+
+
+
+// {fromOffset: true, fetchMaxBytes: 10000000,fetchMinBytes :1,encoding:'utf8',fromBeginning: false,fetchMaxBytes :1000000 },
+
+var Consumer = kafka.Consumer
+var client = new kafka.Client("59.127.187.54:2181")
+// var consumer = new Consumer(
+//   client,
+//   [{ topic: 'test', partition: 0 }],
+//   options
+// );
+
+
+
+
+var consumer = new kafka.HighLevelConsumer(
+        client,
+        [
+            { topic: 'test', partition: 0 }
+        ],
+       options
+);
+// client.on('ready', function () { console.log('client ready!') })
+
+
+
+consumer.on('message', function (message) {
+  // 寫入傳進來的新資料
+    let k = message;
+    //  kafkaJson.test.push(message);
+      io.emit('kafka', k);
+      kafkaJson=k;
+      console.log(message);
+    let content = JSON.stringify(kafkaJson);
+  
+    // fs.writeFile("./server/Json/test.json", content, 'utf8', function (err) {
+    //   if (err) {
+    //     return console.log(err);
+    //   }
+
+    //   console.log("The file of test was saved!");
+    // });
+
+    
+
+
+    //   var data=JSON.stringify(message)
+  console.log("received message", message);
+  
+});
+
+
+
+// consumer.addTopics([
+//   { topic: 'test', partition: 0}
+// ], () => console.log("topic added"));
+
+
+
+// consumer.on('ready', function () { console.log('consumer ready!') })
+

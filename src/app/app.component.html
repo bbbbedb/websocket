@@ -1,9 +1,60 @@
+ <form id ="filter">
+<input [(ngModel)]="term" type="text" name="searchInputBox" >
+
+    </form> 
+<ng-container *ngIf="kafkaTPE != undefine">
+ <!--|flightPipe:filterargs-->
+
+<div class="row"  *ngFor="let flight of kafkaTPE|filter:term">
+  <div class="col-sm-1">{{flight.IO}}</div>
+  <div class="col-sm-1">{{flight.airlineCH}}</div>
+  <div class="col-sm-1">{{flight.airlineShift}}</div>
+  <div class="col-sm-1">{{flight.airlineCode}}</div>
+  <div class="col-sm-1">{{flight.arilineGate}}</div>
+  <div class="col-sm-1">{{flight.estimatedDate}}</div>
+  <div class="col-sm-1">{{flight.estimatedTime}}</div>
+  <div class="col-sm-1">{{flight.flightModel}}</div>
+  <div class="col-sm-1">{{flight.flightScheduleDate}}</div>
+  <div class="col-sm-1">{{flight.flightScheduleTime}}</div>
+  <div class="col-sm-1">{{flight.flightStatus}}</div>
+  <div class="col-sm-1">{{flight.terminal}}</div>
+</div>
+
+</ng-container>
+
+<!--<div class="row" >
+  <div class="col-sm-4 col-xs-12" *ngFor="let ac of arrCommand">
+    <div class="panel panel-info" id="commandReview">
+      <div class="panel-title">
+        {{ac.name}}
+      </div>
+      <rating [ngModel]="ac.rating" [readonly]="true"></rating>
+      <div class="panel-body"><p>{{ac.contain}}</p></div>
+    </div>
+  </div>
+
+</div>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- 在行動或桌面設備，column 寬度總是 50% 寬度 -->
+<router-outlet></router-outlet>
 <div class="row">
   <div class="col-xs-6"  style="background-color:lightblue;">
 
-<div style="height:400px">
+<div style="height:400px; overflow:scroll;">
   <div *ngFor="let message of messages">
   {{message}}
 </div>
@@ -19,7 +70,7 @@
 
 <button type="button" class="btn btn-large btn-block btn-default" (click)="try()">Show</button>
 
-<p>app component</p>
+<p>app component123</p>
   </div>
 
 
@@ -27,7 +78,6 @@
 <app-test></app-test>
   </div>
 </div>
-
 
   <app-news></app-news>
 
